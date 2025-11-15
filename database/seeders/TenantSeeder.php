@@ -8,7 +8,6 @@ use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class TenantSeeder extends Seeder
 {
@@ -42,15 +41,36 @@ class TenantSeeder extends Seeder
             ],
         );
 
-        Member::updateOrCreate(
-            ['tenant_id' => $tenant->id, 'email' => 'jordan@example.com'],
+        $members = [
             [
                 'first_name' => 'Jordan',
                 'last_name' => 'Cole',
+                'email' => 'jordan@example.com',
                 'status' => 'active',
                 'phone' => '+1-555-0101',
             ],
-        );
+            [
+                'first_name' => 'Ariana',
+                'last_name' => 'Lopez',
+                'email' => 'ariana@example.com',
+                'status' => 'active',
+                'phone' => '+1-555-0102',
+            ],
+            [
+                'first_name' => 'Mateo',
+                'last_name' => 'Smith',
+                'email' => 'mateo@example.com',
+                'status' => 'inactive',
+                'phone' => '+1-555-0103',
+            ],
+        ];
+
+        foreach ($members as $memberData) {
+            Member::updateOrCreate(
+                ['tenant_id' => $tenant->id, 'email' => $memberData['email']],
+                $memberData + ['tenant_id' => $tenant->id],
+            );
+        }
 
         $this->command?->info("Se creó el gimnasio {$tenant->name} con el administrador {$user->email}");
     }
