@@ -1,27 +1,29 @@
-<script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { X } from 'lucide-vue-next'
-import {
-  DialogClose,
-  DialogContent,
-  type DialogContentEmits,
-  type DialogContentProps,
-  DialogOverlay,
-  DialogPortal,
-  useForwardPropsEmits,
-} from 'reka-ui'
-import { computed, type HTMLAttributes } from 'vue'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { X } from 'lucide-vue-next';
+import { DialogClose, DialogContent, DialogOverlay, DialogPortal } from 'reka-ui';
 
-const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<DialogContentEmits>()
+defineOptions({
+  inheritAttrs: false,
+});
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 
-  return delegated
-})
-
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const preventOuterPointerDown = (event) => {
+  const originalEvent = event.detail.originalEvent;
+  const target = originalEvent.target;
+  if (
+    originalEvent.offsetX > target.clientWidth ||
+    originalEvent.offsetY > target.clientHeight
+  ) {
+    event.preventDefault();
+  }
+};
 </script>
 
 <template>
@@ -36,14 +38,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
             props.class,
           )
         "
-        v-bind="forwarded"
-        @pointer-down-outside="(event) => {
-          const originalEvent = event.detail.originalEvent;
-          const target = originalEvent.target as HTMLElement;
-          if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
-            event.preventDefault();
-          }
-        }"
+        v-bind="$attrs"
+        @pointer-down-outside="preventOuterPointerDown"
       >
         <slot />
 

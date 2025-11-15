@@ -1,14 +1,30 @@
-<script setup lang="ts">
+<script setup>
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue';
-import type { BreadcrumbItemType } from '@/types';
+import { usePage } from '@inertiajs/vue3';
+import { watch } from 'vue';
+import { useTenantStore } from '@/stores/tenant.js';
 
-interface Props {
-    breadcrumbs?: BreadcrumbItemType[];
-}
-
-withDefaults(defineProps<Props>(), {
-    breadcrumbs: () => [],
+defineProps({
+    breadcrumbs: {
+        type: Array,
+        default: () => [],
+    },
 });
+
+const page = usePage();
+const tenantStore = useTenantStore();
+
+watch(
+    () => page.props.auth?.user?.tenant ?? null,
+    (tenant) => {
+        if (tenant) {
+            tenantStore.setTenant(tenant);
+        } else {
+            tenantStore.clearTenant();
+        }
+    },
+    { immediate: true },
+);
 </script>
 
 <template>

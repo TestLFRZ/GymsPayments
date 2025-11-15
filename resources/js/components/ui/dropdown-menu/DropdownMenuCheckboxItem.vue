@@ -1,31 +1,27 @@
-<script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { Check } from 'lucide-vue-next'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { Check } from 'lucide-vue-next';
 import {
   DropdownMenuCheckboxItem,
-  type DropdownMenuCheckboxItemEmits,
-  type DropdownMenuCheckboxItemProps,
   DropdownMenuItemIndicator,
-  useForwardPropsEmits,
-} from 'reka-ui'
-import { computed, type HTMLAttributes } from 'vue'
+} from 'reka-ui';
 
-const props = defineProps<DropdownMenuCheckboxItemProps & { class?: HTMLAttributes['class'] }>()
-const emits = defineEmits<DropdownMenuCheckboxItemEmits>()
+defineOptions({
+  inheritAttrs: false,
+});
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
-
-  return delegated
-})
-
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 </script>
 
 <template>
   <DropdownMenuCheckboxItem
     data-slot="dropdown-menu-checkbox-item"
-    v-bind="forwarded"
+    v-bind="$attrs"
     :class=" cn(
       `focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
       props.class,

@@ -1,29 +1,28 @@
-<script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { ChevronDown } from 'lucide-vue-next'
-import {
-  NavigationMenuTrigger,
-  type NavigationMenuTriggerProps,
-  useForwardProps,
-} from 'reka-ui'
-import { computed, type HTMLAttributes } from 'vue'
-import { navigationMenuTriggerStyle } from '.'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { ChevronDown } from 'lucide-vue-next';
+import { NavigationMenuTrigger } from 'reka-ui';
+import { useAttrs } from 'vue';
+import { navigationMenuTriggerStyle } from '.';
 
-const props = defineProps<NavigationMenuTriggerProps & { class?: HTMLAttributes['class'] }>()
+defineOptions({
+  inheritAttrs: false,
+});
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 
-  return delegated
-})
-
-const forwardedProps = useForwardProps(delegatedProps)
+const attrs = useAttrs();
 </script>
 
 <template>
   <NavigationMenuTrigger
     data-slot="navigation-menu-trigger"
-    v-bind="forwardedProps"
+    v-bind="attrs"
     :class="cn(navigationMenuTriggerStyle(), 'group', props.class)"
   >
     <slot />

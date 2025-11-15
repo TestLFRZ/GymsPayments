@@ -1,19 +1,23 @@
-<script setup lang="ts">
-import type { HTMLAttributes } from "vue"
-import type { AlertVariants } from "."
-import { cn } from "@/lib/utils"
-import { alertVariants } from "."
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { alertVariants } from '.';
 
-const props = defineProps<{
-  class?: HTMLAttributes["class"]
-  variant?: AlertVariants["variant"]
-}>()
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+  variant: {
+    type: String,
+    default: 'default',
+  },
+});
 </script>
 
 <template>
   <div
     data-slot="alert"
-    :class="cn(alertVariants({ variant }), props.class)"
+    :class="cn(alertVariants({ variant: props.variant }), props.class)"
     role="alert"
   >
     <slot />

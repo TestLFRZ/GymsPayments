@@ -1,22 +1,24 @@
-<script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { DialogTitle, type DialogTitleProps } from 'reka-ui'
-import { computed, type HTMLAttributes } from 'vue'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { DialogTitle } from 'reka-ui';
 
-const props = defineProps<DialogTitleProps & { class?: HTMLAttributes['class'] }>()
+defineOptions({
+  inheritAttrs: false,
+});
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
-
-  return delegated
-})
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 </script>
 
 <template>
   <DialogTitle
     data-slot="sheet-title"
     :class="cn('text-foreground font-semibold', props.class)"
-    v-bind="delegatedProps"
+    v-bind="$attrs"
   >
     <slot />
   </DialogTitle>

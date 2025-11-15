@@ -1,16 +1,20 @@
-<script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { Skeleton } from '@/components/ui/skeleton'
-import { computed, type HTMLAttributes } from 'vue'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { Skeleton } from '@/components/ui/skeleton';
+import { computed } from 'vue';
 
-const props = defineProps<{
-  showIcon?: boolean
-  class?: HTMLAttributes['class']
-}>()
+const props = defineProps({
+  showIcon: {
+    type: Boolean,
+    default: false,
+  },
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 
-const width = computed(() => {
-  return `${Math.floor(Math.random() * 40) + 50}%`;
-})
+const width = computed(() => `${Math.floor(Math.random() * 40) + 50}%`);
 </script>
 
 <template>
@@ -20,7 +24,7 @@ const width = computed(() => {
     :class="cn('flex h-8 items-center gap-2 rounded-md px-2', props.class)"
   >
     <Skeleton
-      v-if="showIcon"
+      v-if="props.showIcon"
       class="size-4 rounded-md"
       data-sidebar="menu-skeleton-icon"
     />

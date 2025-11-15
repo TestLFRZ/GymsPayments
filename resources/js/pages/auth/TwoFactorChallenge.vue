@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,13 +12,7 @@ import { store } from '@/routes/two-factor/login';
 import { Form, Head } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
-interface AuthConfigContent {
-    title: string;
-    description: string;
-    toggleText: string;
-}
-
-const authConfigContent = computed<AuthConfigContent>(() => {
+const authConfigContent = computed(() => {
     if (showRecoveryInput.value) {
         return {
             title: 'Recovery Code',
@@ -36,16 +30,16 @@ const authConfigContent = computed<AuthConfigContent>(() => {
     };
 });
 
-const showRecoveryInput = ref<boolean>(false);
+const showRecoveryInput = ref(false);
 
-const toggleRecoveryMode = (clearErrors: () => void): void => {
+const toggleRecoveryMode = (clearErrors) => {
     showRecoveryInput.value = !showRecoveryInput.value;
     clearErrors();
     code.value = [];
 };
 
-const code = ref<number[]>([]);
-const codeValue = computed<string>(() => code.value.join(''));
+const code = ref([]);
+const codeValue = computed(() => code.value.join(''));
 </script>
 
 <template>

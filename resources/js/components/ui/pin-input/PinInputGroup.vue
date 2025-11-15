@@ -1,19 +1,26 @@
-<script setup lang="ts">
-import type { PrimitiveProps } from "reka-ui"
-import type { HTMLAttributes } from "vue"
-import { reactiveOmit } from "@vueuse/core"
-import { Primitive, useForwardProps } from "reka-ui"
-import { cn } from "@/lib/utils"
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { Primitive } from 'reka-ui';
+import { useAttrs } from 'vue';
 
-const props = defineProps<PrimitiveProps & { class?: HTMLAttributes["class"] }>()
-const delegatedProps = reactiveOmit(props, "class")
-const forwardedProps = useForwardProps(delegatedProps)
+defineOptions({
+  inheritAttrs: false,
+});
+
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
+
+const attrs = useAttrs();
 </script>
 
 <template>
   <Primitive
     data-slot="pin-input-group"
-    v-bind="forwardedProps"
+    v-bind="attrs"
     :class="cn('flex items-center', props.class)"
   >
     <slot />

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import {
     Card,
@@ -10,10 +10,16 @@ import {
 import { home } from '@/routes';
 import { Link } from '@inertiajs/vue3';
 
-defineProps<{
-    title?: string;
-    description?: string;
-}>();
+defineProps({
+    title: {
+        type: String,
+        default: '',
+    },
+    description: {
+        type: String,
+        default: '',
+    },
+});
 </script>
 
 <template>

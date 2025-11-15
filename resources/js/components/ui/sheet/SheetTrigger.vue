@@ -1,13 +1,15 @@
-<script setup lang="ts">
-import { DialogTrigger, type DialogTriggerProps } from 'reka-ui'
+<script setup>
+import { DialogTrigger } from 'reka-ui';
 
-const props = defineProps<DialogTriggerProps>()
+defineOptions({
+  inheritAttrs: false,
+});
 </script>
 
 <template>
   <DialogTrigger
     data-slot="sheet-trigger"
-    v-bind="props"
+    v-bind="$attrs"
   >
     <slot />
   </DialogTrigger>

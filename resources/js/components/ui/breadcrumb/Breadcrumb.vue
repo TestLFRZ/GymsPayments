@@ -1,9 +1,10 @@
-<script lang="ts" setup>
-import type { HTMLAttributes } from 'vue'
-
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-}>()
+<script setup>
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 </script>
 
 <template>

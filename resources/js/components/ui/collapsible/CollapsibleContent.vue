@@ -1,13 +1,15 @@
-<script setup lang="ts">
-import { CollapsibleContent, type CollapsibleContentProps } from 'reka-ui'
+<script setup>
+import { CollapsibleContent } from 'reka-ui';
 
-const props = defineProps<CollapsibleContentProps>()
+defineOptions({
+  inheritAttrs: false,
+});
 </script>
 
 <template>
   <CollapsibleContent
     data-slot="collapsible-content"
-    v-bind="props"
+    v-bind="$attrs"
   >
     <slot />
   </CollapsibleContent>

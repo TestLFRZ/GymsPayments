@@ -1,24 +1,27 @@
-<script setup lang="ts" generic="Type extends 'text' | 'number' = 'text'">
-import type { PinInputRootEmits, PinInputRootProps } from "reka-ui"
-import type { HTMLAttributes } from "vue"
-import { reactiveOmit } from "@vueuse/core"
-import { PinInputRoot, useForwardPropsEmits } from "reka-ui"
-import { cn } from "@/lib/utils"
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { PinInputRoot } from 'reka-ui';
+import { useAttrs } from 'vue';
 
-const props = withDefaults(defineProps<PinInputRootProps<Type> & { class?: HTMLAttributes["class"] }>(), {
-  modelValue: () => [],
-})
-const emits = defineEmits<PinInputRootEmits<Type>>()
+defineOptions({
+  inheritAttrs: false,
+});
 
-const delegatedProps = reactiveOmit(props, "class")
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const attrs = useAttrs();
 </script>
 
 <template>
   <PinInputRoot
     data-slot="pin-input"
-    v-bind="forwarded" :class="cn('flex items-center gap-2 has-disabled:opacity-50 disabled:cursor-not-allowed', props.class)"
+    v-bind="attrs"
+    :class="cn('flex items-center gap-2 has-disabled:opacity-50 disabled:cursor-not-allowed', props.class)"
   >
     <slot />
   </PinInputRoot>

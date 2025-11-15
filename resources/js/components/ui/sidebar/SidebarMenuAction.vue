@@ -1,20 +1,41 @@
-<script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { Primitive, type PrimitiveProps } from 'reka-ui'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { Primitive } from 'reka-ui';
+import { useAttrs } from 'vue';
 
-const props = withDefaults(defineProps<PrimitiveProps & {
-  showOnHover?: boolean
-  class?: HTMLAttributes['class']
-}>(), {
-  as: 'button',
-})
+defineOptions({
+  inheritAttrs: false,
+});
+
+const props = defineProps({
+  as: {
+    type: [String, Object],
+    default: 'button',
+  },
+  asChild: {
+    type: Boolean,
+    default: false,
+  },
+  showOnHover: {
+    type: Boolean,
+    default: false,
+  },
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
+
+const attrs = useAttrs();
 </script>
 
 <template>
   <Primitive
     data-slot="sidebar-menu-action"
     data-sidebar="menu-action"
+    :as="props.as"
+    :as-child="props.asChild"
+    v-bind="attrs"
     :class="cn(
       'text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground peer-hover/menu-button:text-sidebar-accent-foreground absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0',
       'after:absolute after:-inset-2 md:after:hidden',
@@ -22,12 +43,10 @@ const props = withDefaults(defineProps<PrimitiveProps & {
       'peer-data-[size=default]/menu-button:top-1.5',
       'peer-data-[size=lg]/menu-button:top-2.5',
       'group-data-[collapsible=icon]:hidden',
-      showOnHover
+      props.showOnHover
         && 'peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0',
       props.class,
     )"
-    :as="as"
-    :as-child="asChild"
   >
     <slot />
   </Primitive>

@@ -1,11 +1,13 @@
-<script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
-import { cn } from '@/lib/utils'
-import { AvatarRoot } from 'reka-ui'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { AvatarRoot } from 'reka-ui';
 
-const props = defineProps<{
-  class?: HTMLAttributes['class']
-}>()
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 </script>
 
 <template>

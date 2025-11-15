@@ -1,26 +1,23 @@
-<script setup lang="ts">
-import { cn } from '@/lib/utils'
-import {
-  DropdownMenuSeparator,
-  type DropdownMenuSeparatorProps,
-} from 'reka-ui'
-import { computed, type HTMLAttributes } from 'vue'
+<script setup>
+import { cn } from '@/lib/utils.js';
+import { DropdownMenuSeparator } from 'reka-ui';
 
-const props = defineProps<DropdownMenuSeparatorProps & {
-  class?: HTMLAttributes['class']
-}>()
+defineOptions({
+  inheritAttrs: false,
+});
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
-
-  return delegated
-})
+const props = defineProps({
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 </script>
 
 <template>
   <DropdownMenuSeparator
     data-slot="dropdown-menu-separator"
-    v-bind="delegatedProps"
+    v-bind="$attrs"
     :class="cn('bg-border -mx-1 my-1 h-px', props.class)"
   />
 </template>

@@ -1,18 +1,16 @@
-<script setup lang="ts">
-import type { CollapsibleRootEmits, CollapsibleRootProps } from 'reka-ui'
-import { CollapsibleRoot, useForwardPropsEmits } from 'reka-ui'
+<script setup>
+import { CollapsibleRoot } from 'reka-ui';
 
-const props = defineProps<CollapsibleRootProps>()
-const emits = defineEmits<CollapsibleRootEmits>()
-
-const forwarded = useForwardPropsEmits(props, emits)
+defineOptions({
+  inheritAttrs: false,
+});
 </script>
 
 <template>
   <CollapsibleRoot
     v-slot="{ open }"
     data-slot="collapsible"
-    v-bind="forwarded"
+    v-bind="$attrs"
   >
     <slot :open="open" />
   </CollapsibleRoot>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import InputError from '@/components/InputError.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
@@ -10,9 +10,12 @@ import { login } from '@/routes';
 import { email } from '@/routes/password';
 import { Form, Head } from '@inertiajs/vue3';
 
-defineProps<{
-    status?: string;
-}>();
+defineProps({
+    status: {
+        type: String,
+        default: null,
+    },
+});
 </script>
 
 <template>

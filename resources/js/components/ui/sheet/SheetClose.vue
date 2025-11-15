@@ -1,13 +1,15 @@
-<script setup lang="ts">
-import { DialogClose, type DialogCloseProps } from 'reka-ui'
+<script setup>
+import { DialogClose } from 'reka-ui';
 
-const props = defineProps<DialogCloseProps>()
+defineOptions({
+  inheritAttrs: false,
+});
 </script>
 
 <template>
   <DialogClose
     data-slot="sheet-close"
-    v-bind="props"
+    v-bind="$attrs"
   >
     <slot />
   </DialogClose>

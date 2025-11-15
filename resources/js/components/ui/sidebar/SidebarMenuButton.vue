@@ -1,31 +1,57 @@
-<script setup lang="ts">
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { type Component, computed } from 'vue'
-import SidebarMenuButtonChild, { type SidebarMenuButtonProps } from './SidebarMenuButtonChild.vue'
-import { useSidebar } from './utils'
+<script setup>
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { computed } from 'vue';
+import SidebarMenuButtonChild from './SidebarMenuButtonChild.vue';
+import { useSidebar } from './utils';
 
 defineOptions({
   inheritAttrs: false,
-})
+});
 
-const props = withDefaults(defineProps<SidebarMenuButtonProps & {
-  tooltip?: string | Component
-}>(), {
-  as: 'button',
-  variant: 'default',
-  size: 'default',
-})
+const props = defineProps({
+  tooltip: {
+    type: [String, Object],
+    default: undefined,
+  },
+  as: {
+    type: [String, Object],
+    default: 'button',
+  },
+  asChild: {
+    type: Boolean,
+    default: false,
+  },
+  variant: {
+    type: String,
+    default: 'default',
+  },
+  size: {
+    type: String,
+    default: 'default',
+  },
+  isActive: {
+    type: Boolean,
+    default: false,
+  },
+  class: {
+    type: [String, Array, Object],
+    default: undefined,
+  },
+});
 
-const { isMobile, state } = useSidebar()
+const { isMobile, state } = useSidebar();
 
 const delegatedProps = computed(() => {
-  const { tooltip, ...delegated } = props
-  return delegated
-})
+  const { tooltip, ...delegated } = props;
+  return delegated;
+});
 </script>
 
 <template>
-  <SidebarMenuButtonChild v-if="!tooltip" v-bind="{ ...delegatedProps, ...$attrs }">
+  <SidebarMenuButtonChild
+    v-if="!props.tooltip"
+    v-bind="{ ...delegatedProps, ...$attrs }"
+  >
     <slot />
   </SidebarMenuButtonChild>
 
@@ -40,10 +66,13 @@ const delegatedProps = computed(() => {
       align="center"
       :hidden="state !== 'collapsed' || isMobile"
     >
-      <template v-if="typeof tooltip === 'string'">
-        {{ tooltip }}
+      <template v-if="typeof props.tooltip === 'string'">
+        {{ props.tooltip }}
       </template>
-      <component :is="tooltip" v-else />
+      <component
+        :is="props.tooltip"
+        v-else
+      />
     </TooltipContent>
   </Tooltip>
 </template>
