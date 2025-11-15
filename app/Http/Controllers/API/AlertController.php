@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\MembershipAlertBroadcast;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Alert\StoreAlertRequest;
 use App\Models\Alert;
@@ -23,7 +24,8 @@ class AlertController extends Controller
 
     public function store(StoreAlertRequest $request)
     {
-        $alert = Alert::create($request->validated());
+        $alert = Alert::create($request->validated())->fresh();
+        broadcast(new MembershipAlertBroadcast($alert));
 
         return response()->json($alert, Response::HTTP_CREATED);
     }

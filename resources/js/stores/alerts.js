@@ -13,6 +13,11 @@ export const useAlertStore = defineStore('alerts', {
             const response = await http.get('/alerts');
             this.alerts = response.data.data;
         },
+        async createAlert(payload) {
+            const response = await http.post('/alerts', payload);
+            this.alerts.unshift(response.data);
+            return response.data;
+        },
         connect(tenantId) {
             if (this.echo) {
                 return;
