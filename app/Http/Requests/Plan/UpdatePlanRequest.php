@@ -24,4 +24,12 @@ class UpdatePlanRequest extends FormRequest
             'is_active' => ['nullable', 'boolean'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'currency.size' => 'La moneda debe tener exactamente 3 caracteres (por ejemplo, USD).',
+            'currency.string' => 'La moneda debe ser una cadena de texto válida.',
+        ];
+    }
 }

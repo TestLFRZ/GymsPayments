@@ -24,11 +24,11 @@ class TenantSeeder extends Seeder
         );
 
         $user = User::updateOrCreate(
-            ['email' => 'owner@primefitness.test'],
+            ['email' => 'correo@correo.com'],
             [
                 'tenant_id' => $tenant->id,
-                'name' => 'Prime Owner',
-                'password' => Hash::make('password'),
+                'name' => 'Admin',
+                'password' => Hash::make('12345678'),
             ],
         );
 
