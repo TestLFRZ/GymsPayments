@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
@@ -43,21 +44,23 @@ class ProfileController extends Controller
     /**
      * Delete the user's profile.
      */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
+public function destroy(Request $request): RedirectResponse
+{
+    $request->validate([
+        'password' => ['required', 'current_password'],
+    ]);
 
-        $user = $request->user();
+    $user = $request->user();
+    $userId = $user->id;
 
-        Auth::logout();
+    // Forzar la eliminación física del registro
+    DB::table('users')->where('id', $userId)->delete();
 
-        $user->delete();
+    // Cerrar sesión
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/');
-    }
+    return redirect('/');
+}
 }

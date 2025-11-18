@@ -64,7 +64,12 @@ test('user can delete their account', function () {
         ->assertRedirect(route('home'));
 
     $this->assertGuest();
-    expect($user->fresh())->toBeNull();
+
+    // Verificar que el usuario ya no puede autenticarse
+    $this->assertFalse(Auth::check());
+
+    // Verificar que el usuario no existe en la base de datos
+    $this->assertDatabaseMissing('users', ['id' => $user->id]);
 });
 
 test('correct password must be provided to delete account', function () {
