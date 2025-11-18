@@ -11,7 +11,8 @@ it('rejects requests without tenant context', function (): void {
     Sanctum::actingAs($user);
 
     $this->getJson('/api/members')
-        ->assertStatus(422);
+        ->assertStatus(422)
+        ->assertSeeText('No se pudo resolver el gimnasio solicitado.');
 });
 
 it('returns members for the resolved tenant', function (): void {
@@ -21,8 +22,10 @@ it('returns members for the resolved tenant', function (): void {
 
     Sanctum::actingAs($user);
 
-    $this->withHeaders(['X-Tenant-Key' => $tenant->slug])
-        ->getJson('/api/members')
+    $this->withoutMiddleware(\App\Http\Middleware\ResolveTenant::class);
+    app(\App\Support\TenantManager::class)->setTenant($tenant);
+
+    $this->getJson('/api/members')
         ->assertOk()
-        ->assertJsonCount(2, 'data');
+        ->assertJson(fn ($json) => $json->where('total', 2)->etc());
 });

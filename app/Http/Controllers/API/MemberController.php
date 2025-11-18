@@ -13,8 +13,10 @@ class MemberController extends Controller
 {
     public function index(Request $request)
     {
+        $status = $request->string('status');
+
         $members = Member::query()
-            ->when($request->string('status'), fn ($query, $status) => $query->where('status', $status))
+            ->when($status->isNotEmpty(), fn ($query) => $query->where('status', $status->toString()))
             ->orderByDesc('created_at')
             ->paginate();
 

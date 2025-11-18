@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\Tenant;
+use Illuminate\Support\Facades\Auth;
 
 class TenantManager
 {
@@ -15,11 +16,21 @@ class TenantManager
 
     public function getTenant(): ?Tenant
     {
-        return $this->tenant;
+        if ($this->tenant) {
+            return $this->tenant;
+        }
+
+        $user = Auth::user();
+
+        return $user?->tenant;
     }
 
     public function id(): ?int
     {
-        return $this->tenant?->id;
+        if ($this->tenant) {
+            return $this->tenant->id;
+        }
+
+        return Auth::user()?->tenant_id;
     }
 }
