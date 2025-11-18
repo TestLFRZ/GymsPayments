@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Http\Controllers\Admin\TenantController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -30,6 +32,10 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('alerts', function () {
         return Inertia::render('alerts/Index');
     })->name('alerts.index');
+
+    Route::prefix('admin')->group(function () {
+        Route::resource('tenants', TenantController::class)->names('admin.tenants');
+    });
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

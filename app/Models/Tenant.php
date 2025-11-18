@@ -30,4 +30,9 @@ class Tenant extends Model
     {
         return $this->hasMany(Plan::class);
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

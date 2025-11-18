@@ -12,14 +12,14 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { Link } from '@inertiajs/vue3';
-import { Bell, BookOpen, CreditCard, Folder, LayoutGrid, Users, Layers } from 'lucide-vue-next';
+import { Bell, BookOpen, CreditCard, Folder, LayoutGrid, Users, Layers, Building2, Dumbbell } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems = [
     {
         title: 'Panel',
         href: '/dashboard',
-        icon: LayoutGrid,
+        icon: Dumbbell,
     },
     {
         title: 'Miembros',
@@ -41,6 +41,12 @@ const mainNavItems = [
         href: '/alerts',
         icon: Bell,
     },
+    {
+        title: 'Inquilinos',
+        href: '/admin/tenants',
+        icon: Building2,
+        adminOnly: true,
+    },
 ];
 
 </script>
@@ -56,6 +62,14 @@ const mainNavItems = [
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
+                <template v-for="item in mainNavItems" :key="item.href">
+                    <SidebarMenuItem
+                        v-if="!item.adminOnly || $page.props.auth.user?.is_admin"
+                        :title="item.title"
+                        :to="item.href"
+                        :icon="item.icon"
+                    />
+                </template>
             </SidebarMenu>
         </SidebarHeader>
 

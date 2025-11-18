@@ -26,11 +26,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'tenant_id',
         'name',
         'email',
         'password',
+        'is_admin', // Asegúrate de que esté incluido
         'settings',
+        'tenant_id'
     ];
 
     /**
@@ -63,5 +64,10 @@ class User extends Authenticatable
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
     }
 }
